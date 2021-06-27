@@ -1,0 +1,150 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Locales
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Locales
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1e4303e4b2eb3ea4ebb0456774b51fd1
+  m_SerializeEntries:
+  - m_GUID: 829d5d71975194bae9b003dbef841eec
+    m_Address: French (fr)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 5e291ff242d584c94ad430c684411c13
+    m_Address: Russian (ru)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 334beca9e5f594a4eb4719da995afb0c
+    m_Address: Chinese (Simplified) (zh) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 97c80e95c5627fb47aefcfe611954993
+    m_Address: English (en) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: b2e0bb2d7db4f1840adfd9ed935430d5
+    m_Address: German (de) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 6f506b6bae068a4428fc77b8838240c1
+    m_Address: Hindi (hi) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: a11e00b7d59190c4e9b6bdea2574348c
+    m_Address: Italian (it) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: ffd497bcb5d1c004ea782e6989fd17f0
+    m_Address: Japanese (ja) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 7770b48ec01d3e54eb576fb533dc7985
+    m_Address: Korean (ko) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 420a8f33dc918614ea273d019729b111
+    m_Address: Portuguese (pt) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 79bd11fbfc826a449841436eeb9d6d25
+    m_Address: Spanish (es) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: ffb7e546386d9594ca73085a6b814ed9
+    m_Address: Tamil (India) (ta-IN) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 4966b47002cc8a64e969a15afe1405fb
+    m_Address: Telugu (India) (te-IN) 1
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: b51b98c77c20146e0a686e8e8aa64665
+    m_Address: Japanese (ja)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: c5f6f4890b84d4a92976c1455be99808
+    m_Address: Telugu (India) (te-IN)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: aa93372a992104da3964320b572b50dc
+    m_Address: Portuguese (pt)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: cfb2765abe3dc4990b6edf527dbf01b1
+    m_Address: Tamil (India) (ta-IN)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 0021727a1489e416da9f6a1728ae07bb
+    m_Address: Italian (it)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 0152fe5b982d14cc2b417aa7e1e998a5
+    m_Address: Chinese (Simplified) (zh)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: e1982f6b92e3c4454803b83ed11fe5b4
+    m_Address: English (en)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 05140a9bfe6cd6b41b69d86338a694f7
+    m_Address: Dutch (nl)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 9d9d6c0c31cc64ffda6370d49aa773d8
+    m_Address: Korean (ko)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 931c12ccce2ec465297af25c27c49d17
+    m_Address: German (de)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 8e6865bdcea9e452aa8b8adec1e3cdf6
+    m_Address: Spanish (es)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  - m_GUID: 35f34f7ea21324817b9a388413d28b46
+    m_Address: Hindi (hi)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 1d70c1a36235d224ba8e8dda63b565b1, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 52fb18463b70b1c44aabc85ebe9e2065, type: 2}
+    - {fileID: 11400000, guid: dfb0ed26216c2c54985546bdae3d7166, type: 2}
