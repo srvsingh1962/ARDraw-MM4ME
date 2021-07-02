@@ -66,7 +66,5 @@ public class ARLine
         goLineRenderer.SetPosition(1, position);
 
         LineRenderer = goLineRenderer;
-
-        //ARDebugManager.Instance.LogInfo($"New line renderer created");
     }
 }

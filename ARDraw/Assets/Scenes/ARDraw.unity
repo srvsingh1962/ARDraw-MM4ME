@@ -993,7 +993,7 @@ RectTransform:
   m_Children:
   - {fileID: 1178766256}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1096,7 +1096,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172667331
 GameObject:
@@ -1271,6 +1271,7 @@ GameObject:
   - component: {fileID: 1196796736}
   - component: {fileID: 1196796738}
   - component: {fileID: 1196796737}
+  - component: {fileID: 1196796739}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -1290,7 +1291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 0}
+  m_PlanePrefab: {fileID: 4776765576899091622, guid: 635f0c5c56e955042b05a01c20415c3b,
+    type: 3}
   m_DetectionMode: -1
 --- !u!114 &1196796732
 MonoBehaviour:
@@ -1346,6 +1348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineSettings: {fileID: 11400000, guid: c8e9d19ef2fb80546ac4f40a5dfffd8d, type: 2}
+  m_PlaneManager: {fileID: 1196796731}
   _linewidthdropdown: {fileID: 177503952}
   _canvas: {fileID: 950802907}
   OnDraw:
@@ -1422,6 +1425,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PointCloudPrefab: {fileID: 0}
+--- !u!114 &1196796739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196796730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RaycastPrefab: {fileID: 0}
 --- !u!1 &1243971154
 GameObject:
   m_ObjectHideFlags: 0
