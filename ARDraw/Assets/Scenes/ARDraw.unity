@@ -1113,7 +1113,7 @@ GameObject:
   - component: {fileID: 1172667333}
   m_Layer: 0
   m_Name: AR Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1347,6 +1347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f80543599574fa48bc9ff69e7a62748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lengthTextGameobject: {fileID: 3398282958379103114, guid: 74968005942726949b299bad3541b789,
+    type: 3}
   lineSettings: {fileID: 11400000, guid: c8e9d19ef2fb80546ac4f40a5dfffd8d, type: 2}
   m_PlaneManager: {fileID: 1196796731}
   _linewidthdropdown: {fileID: 177503952}
@@ -1380,7 +1382,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
   OnRestarted:
     m_PersistentCalls:
@@ -1403,7 +1405,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1196796730}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc252b3c751134839a8699af7e6f4d80, type: 3}
   m_Name: 

@@ -12,6 +12,9 @@ using UnityEngine.XR.ARSubsystems;
 public class ARDrawManager : Singleton<ARDrawManager>
 {
     [SerializeField]
+    GameObject lengthTextGameobject;
+
+    [SerializeField]
     private LineSettings lineSettings = null;
 
     [SerializeField]
@@ -48,6 +51,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     bool isplane;
 
+    private float _lineLength = 0;
+
     private void Awake()
     {
         _arRaycastManager = GetComponent<ARRaycastManager>();
@@ -57,12 +62,60 @@ public class ARDrawManager : Singleton<ARDrawManager>
     void Update()
     {
         _canvas.SetActive(CanDraw);
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && CanDraw)
-        {
-            return;
-        }
+        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && CanDraw)
+        //{
+         //   return;
+        //}
+#if !UNITY_EDITOR
         DrawOnTouch();
+#else
+        DrawOnMouse();
+#endif
     }
+
+    void DrawOnMouse()
+    {
+        if (!CanDraw) return;
+
+        Vector3 mousePosition = arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, lineSettings.distanceFromCamera));
+
+        if (Input.GetMouseButton(0))
+        {
+            OnDraw?.Invoke();
+
+            if (Lines.Keys.Count == 0)
+            {
+                ARLine line = new ARLine(lineSettings);
+                Lines.Add(0, line);
+                line.AddNewLineRenderer(transform, null, mousePosition);
+            }
+            else
+            {
+                Lines[0].AddPoint(mousePosition);
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            Vector3[] PointsInLine = new Vector3[Lines[0].LineRenderer.positionCount];
+            Lines[0].LineRenderer.GetPositions(PointsInLine);
+            float max_x = PointsInLine[0].x;
+            for (int j = 0; j < PointsInLine.Length - 1; j++)
+            {
+                _lineLength += Vector3.Distance(PointsInLine[j], PointsInLine[j + 1]);
+                max_x = Mathf.Max(max_x, PointsInLine[j].x);
+            }
+            Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[0].LineRenderer.positionCount - 1]) / 2;
+            pos.x = max_x + 0.08f;
+            Debug.Log(max_x);
+            GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
+
+            TextMeshPro _linelengthtext = lineLength.GetComponent<TextMeshPro>();
+            _linelengthtext.text = _lineLength.ToString() + " m";
+            _lineLength = 0;
+            Lines.Remove(0);
+        }
+    }
+
 
     public void AllowDraw(bool isAllow)
     {
@@ -157,6 +210,21 @@ public class ARDrawManager : Singleton<ARDrawManager>
             }
             else if (touch.phase == TouchPhase.Ended)
             {
+                Vector3[] PointsInLine = new Vector3[Lines[touch.fingerId].LineRenderer.positionCount];
+                Lines[touch.fingerId].LineRenderer.GetPositions(PointsInLine);
+                float max_x = PointsInLine[0].x;
+                for (int j = 0; j < PointsInLine.Length - 1; j++)
+                {
+                    _lineLength += Vector3.Distance(PointsInLine[j], PointsInLine[j + 1]);
+                    max_x = Mathf.Max(max_x, PointsInLine[j].x);
+                }
+                Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[touch.fingerId].LineRenderer.positionCount - 1]) / 2;
+                pos.x = max_x + 0.03f;
+                GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
+
+                TextMeshPro _linelengthtext = lineLength.GetComponent<TextMeshPro>();
+                _linelengthtext.text = _lineLength.ToString() + " m";
+                _lineLength = 0;
                 Lines.Remove(touch.fingerId);
             }
         }

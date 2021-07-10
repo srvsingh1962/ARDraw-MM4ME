@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using TMPro;
 
 public class ARLine
 {
@@ -7,7 +8,7 @@ public class ARLine
 
     private Vector3 prevPointDistance = Vector3.zero;
 
-    private LineRenderer LineRenderer { get; set; }
+    public LineRenderer LineRenderer { get; set; }
 
     private LineSettings settings;
 
