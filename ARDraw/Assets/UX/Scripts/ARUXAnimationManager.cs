@@ -8,6 +8,7 @@ public class ARUXAnimationManager : MonoBehaviour
 {
     [SerializeField]
     ARDrawManager _ardrawmanager;
+
     [SerializeField]
     [Tooltip("Instructional test for visual UI")]
     TMP_Text m_InstructionText;
