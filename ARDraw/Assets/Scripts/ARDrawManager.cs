@@ -7,6 +7,7 @@ using UnityEngine.XR.ARFoundation;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.ARSubsystems;
+using System.Collections;
 
 [RequireComponent(typeof(ARAnchorManager))]
 public class ARDrawManager : Singleton<ARDrawManager>
@@ -18,13 +19,13 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private LineSettings lineSettings = null;
 
     [SerializeField]
-    private ARPlaneManager m_PlaneManager;
+    private ARPlaneManager _planeManager;
 
     [SerializeField]
     TMP_Dropdown _linewidthdropdown;
 
     [SerializeField]
-    GameObject _canvas;
+    GameObject _Canvas;
 
     [SerializeField]
     private UnityEvent OnDraw = null;
@@ -33,7 +34,10 @@ public class ARDrawManager : Singleton<ARDrawManager>
     private ARAnchorManager anchorManager = null;
 
     [SerializeField]
-    private Camera arCamera = null;
+    private Camera _arCamera = null;
+
+    [SerializeField]
+    GameObject removeLinesinfo;
 
     public static event Action Ontouched;
 
@@ -49,19 +53,39 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-    bool isplane;
+    bool isplane = false;
+
+    bool infoShowned = false;
 
     private float _lineLength = 0;
 
     private void Awake()
     {
         _arRaycastManager = GetComponent<ARRaycastManager>();
-        m_PlaneManager = GetComponent<ARPlaneManager>();
+        _planeManager = GetComponent<ARPlaneManager>();
+    }
+
+    private void Start()
+    {
+        removeLinesinfo.SetActive(false);
+        infoShowned = false;
+    }
+
+    IEnumerator ShowInfo()
+    {
+        infoShowned = true;
+        removeLinesinfo.SetActive(true);
+        yield return new WaitForSeconds(5);
+        removeLinesinfo.SetActive(false);
     }
 
     void Update()
     {
-        _canvas.SetActive(CanDraw);
+        _Canvas.SetActive(CanDraw);
+        if (!infoShowned && CanDraw)
+        {
+            StartCoroutine(ShowInfo());
+        }
         
 #if !UNITY_EDITOR
         DrawOnTouch();
@@ -74,7 +98,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         if (!CanDraw) return;
 
-        Vector3 mousePosition = arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, lineSettings.distanceFromCamera));
+        Vector3 mousePosition = _arCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, lineSettings.distanceFromCamera));
 
         if (Input.GetMouseButton(0))
         {
@@ -106,6 +130,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
             GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
 
             TextMeshPro _linelengthtext = lineLength.GetComponent<TextMeshPro>();
+            Math.Round(_lineLength, 3);
             _linelengthtext.text = _lineLength.ToString() + " m";
             _lineLength = 0;
             Lines.Remove(0);
@@ -129,7 +154,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
             // Drawing in 3D plane
 
-            //Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(i).position.x, Input.GetTouch(i).position.y, lineSettings.distanceFromCamera));
+            // Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(i).position.x, Input.GetTouch(i).position.y, lineSettings.distanceFromCamera));
 
             // Drawing on recognized plane (Horizontal and Vertical Plane)
 
@@ -195,9 +220,8 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[touch.fingerId].LineRenderer.positionCount - 1]) / 2;
                 pos.x = max_x + 0.03f;
                 GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
-
-                TextMeshPro _linelengthtext = lineLength.GetComponent<TextMeshPro>();
-                _linelengthtext.text = _lineLength.ToString() + " m";
+                Math.Round(_lineLength, 3);
+                lineLength.GetComponent<TextMeshPro>().text = _lineLength.ToString() + " m";
                 _lineLength = 0;
                 Lines.Remove(touch.fingerId);
             }
@@ -219,7 +243,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
     {
         if ((hit.hitType & TrackableType.Planes) != 0)
         {
-            var plane = m_PlaneManager.GetPlane(hit.trackableId);
+            var plane = _planeManager.GetPlane(hit.trackableId);
             if (plane.alignment == PlaneAlignment.HorizontalUp)
             {
                 return true;

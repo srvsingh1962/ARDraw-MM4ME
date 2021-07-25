@@ -5,9 +5,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.XR.ARFoundation;
 
 public class ARSceneUIController : MonoBehaviour
 {
+    [SerializeField]
+    ARDrawManager _arDrawManager;
+
+    [SerializeField]
+    ARPlaneManager _arPlaneManager;
+
     [SerializeField]
     [Tooltip("Instructional test for visual UI")]
     TMP_Text m_InstructionText;
@@ -19,6 +26,16 @@ public class ARSceneUIController : MonoBehaviour
     {
         get => m_findPlaneClip;
         set => m_findPlaneClip = value;
+    }
+
+    [SerializeField]
+    [Tooltip("Tap to place animation")]
+    VideoClip m_TapToPlaceClip;
+
+    public VideoClip tapToPlaceClip
+    {
+        get => m_TapToPlaceClip;
+        set => m_TapToPlaceClip = value;
     }
 
     [SerializeField]
@@ -53,6 +70,7 @@ public class ARSceneUIController : MonoBehaviour
     [SerializeField]
     [Tooltip("time the UI takes to fade on")]
     float m_FadeOnDuration = 1.0f;
+
     [SerializeField]
     [Tooltip("time the UI takes to fade off")]
     float m_FadeOffDuration = 0.5f;
@@ -72,11 +90,50 @@ public class ARSceneUIController : MonoBehaviour
     float m_TweenDuration;
 
     const string k_MoveDeviceText = "Move Device Slowly";
+    const string k_TouchToDrawText = "Touch and Draw";
 
     void Start()
     {
         m_StartColor = m_AlphaWhite;
         m_TargetColor = m_White;
+        ShowCrossPlatformFindAPlane();
+    }
+
+    public void ShowTouchToDraw()
+    {
+        m_VideoPlayer.clip = m_TapToPlaceClip;
+        m_VideoPlayer.Play();
+        m_InstructionText.text = k_TouchToDrawText;
+        m_FadeOn = true;
+        _arDrawManager.AllowDraw(true);
+    }
+
+    public void ShowCrossPlatformFindAPlane()
+    {
+        m_VideoPlayer.clip = m_findPlaneClip;
+        m_VideoPlayer.Play();
+        m_InstructionText.text = k_MoveDeviceText;
+        m_FadeOn = true;
+    }
+
+    public void FadeOffCurrentUI()
+    {
+        if (m_VideoPlayer.clip != null)
+        {
+            // handle exiting fade out early if currently fading out another Clip
+            if (m_Tweening || m_FadeOn)
+            {
+                // stop tween immediately
+                m_TweenTime = 1.0f;
+                m_RawImage.color = m_AlphaWhite;
+                m_InstructionText.color = m_AlphaWhite;
+                if (onFadeOffComplete != null)
+                {
+                    onFadeOffComplete();
+                }
+            }
+            m_FadeOff = true;
+        }
     }
 
     void Update()
@@ -135,5 +192,15 @@ public class ARSceneUIController : MonoBehaviour
                 }
             }
         }
+
+        if (MultiplePlanesFound())
+        {
+            FadeOffCurrentUI();
+        }
+
     }
+
+    bool PlanesFound() => _arPlaneManager && _arPlaneManager.trackables.count > 0;
+
+    bool MultiplePlanesFound() => _arPlaneManager && _arPlaneManager.trackables.count > 1;
 }
