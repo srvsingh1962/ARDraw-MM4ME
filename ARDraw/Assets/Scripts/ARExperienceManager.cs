@@ -37,15 +37,13 @@ public class ARExperienceManager : MonoBehaviour
 
     private void Activate()
     {
-        //ARDebugManager.Instance.LogInfo("Activate Experience");
         OnInitialized?.Invoke();
         Initialized = true;
-        arPlaneManager.enabled = false;
+        arPlaneManager.enabled = true;
     }
 
     public void Restart()
     {
-        //ARDebugManager.Instance.LogInfo("Restart Experience");
         OnRestarted?.Invoke();
         Initialized = false;
         arPlaneManager.enabled = true;
