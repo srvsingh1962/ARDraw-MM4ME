@@ -49,7 +49,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     private bool CanDraw { get; set; }
 
-    float[] linewidth = {0.01f, 0.015f, 0.02f, 0.025f, 0.03f, 0.035f};
+    float[] linewidth = {0.015f, 0.02f, 0.025f, 0.03f, 0.035f, 0.04f};
 
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
@@ -57,7 +57,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     bool infoShowned = false;
 
-    private float _lineLength = 0;
+    private double _lineLength = 0.0f;
 
     private void Awake()
     {
@@ -126,13 +126,14 @@ public class ARDrawManager : Singleton<ARDrawManager>
                 max_x = Mathf.Max(max_x, PointsInLine[j].x);
             }
             Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[0].LineRenderer.positionCount - 1]) / 2;
-            pos.x = max_x + 0.08f;
+            pos.x = max_x + 0.2f;
             GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
 
             TextMeshPro _linelengthtext = lineLength.GetComponent<TextMeshPro>();
-            Math.Round(_lineLength, 3);
+            _lineLength = Math.Round(_lineLength, 3);
+            Debug.Log(_lineLength);
             _linelengthtext.text = _lineLength.ToString() + " m";
-            _lineLength = 0;
+            _lineLength = 0.0f;
             Lines.Remove(0);
         }
     }
@@ -211,18 +212,17 @@ public class ARDrawManager : Singleton<ARDrawManager>
             {
                 Vector3[] PointsInLine = new Vector3[Lines[touch.fingerId].LineRenderer.positionCount];
                 Lines[touch.fingerId].LineRenderer.GetPositions(PointsInLine);
-                float max_x = PointsInLine[0].x;
+                float max_x = PointsInLine[0].x; _lineLength = 0;
                 for (int j = 0; j < PointsInLine.Length - 1; j++)
                 {
                     _lineLength += Vector3.Distance(PointsInLine[j], PointsInLine[j + 1]);
                     max_x = Mathf.Max(max_x, PointsInLine[j].x);
                 }
                 Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[touch.fingerId].LineRenderer.positionCount - 1]) / 2;
-                pos.x = max_x + 0.03f;
+                pos.x = max_x + 0.1f;
                 GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
-                Math.Round(_lineLength, 3);
+                _lineLength = Math.Round(_lineLength, 3);
                 lineLength.GetComponent<TextMeshPro>().text = _lineLength.ToString() + " m";
-                _lineLength = 0;
                 Lines.Remove(touch.fingerId);
             }
         }
