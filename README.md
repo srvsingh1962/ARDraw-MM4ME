@@ -7,6 +7,35 @@ This Project is about AR Draw + Measure Experience in UNITY 3D with the below-me
 * Multicolor options for lines.
 * One or multiple fingers touch draw ability.
 
+## Video Samples:
+Video Folder: https://drive.google.com/drive/folders/1s6zhEX3iMFHdTDHKqXPMzgBqAieI8OBt
+
+
+
+https://user-images.githubusercontent.com/56843128/130333406-571e42ba-922d-499b-b065-934f4c26b62a.mp4
+
+
+
+
+## About Project:
+
+### Scenes:
+There are major 2 scenes in the project:
+* ARDraw-ScreenRecording&ColorPicker : With ScreenRecording & Color picker feature.
+* ARDraw : Basic ARDraw Feature.
+
+    ![Screenshot 2021-08-21 235907](https://user-images.githubusercontent.com/56843128/130331768-6755fd97-f93d-4cc7-a4d2-208bf5951f00.png)
+    
+### Scripts:
+There are 5 Major Scripts written for the project and other from helping Plugin/Library:
+
+* ARDrawManager   :  Responsible for drawing the lines when eligible to draw on one or multi touch.
+* ARExperienceManager   :  Responsible for interactiong between multiple scripts about when ios eligible to draw and when not.
+* ARLine :  Carry the property and role to add & remove point to draw line when touching the screen to the line renderer.
+* ColorPicking :  Responsible for the color picker feature adn update the color to the line material.
+* UIController :  Responsible for Screen Recording for click event on start and stop Recording button and calls AndroidUtils class functions.
+
+
 ## How to setup the project on your local machine:
 * Make sure you have [UNITY 3D](https://unity3d.com/get-unity/download) and [Android Studio](https://developer.android.com/studio?gclsrc=ds&gclsrc=ds&gclid=CKLO17GTuvICFQOVjgod_mED4A) installed on your machine.
 * Clone this and [Mapmint4ME](https://github.com/srvsingh1962/MapMint4ME) Repository at your desired same folder.
