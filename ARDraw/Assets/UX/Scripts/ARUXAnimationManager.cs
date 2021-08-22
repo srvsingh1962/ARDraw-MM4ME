@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +8,9 @@ using UnityEngine.Video;
 
 public class ARUXAnimationManager : MonoBehaviour
 {
+    public string[] assetName = { "findaplane", "taptoplace" };
+    public string bundleName = "arvideo";
+
     [SerializeField]
     ARDrawManager _ardrawmanager;
 
@@ -191,8 +196,19 @@ public class ARUXAnimationManager : MonoBehaviour
         set => m_LocalizeText = value;
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        AssetBundleCreateRequest asyncBundleRequest = AssetBundle.LoadFromFileAsync(Path.Combine(Application.streamingAssetsPath, bundleName));
+        yield return asyncBundleRequest;
+
+        AssetBundle localAssetBundle = asyncBundleRequest.assetBundle;
+        if(localAssetBundle == null)
+        {
+            Debug.LogError("Failed to load AssetBundle");
+            yield break;
+        }
+        m_FindAPlaneClip = localAssetBundle.LoadAsset<VideoClip>(assetName[0]);
+        m_TapToPlaceClip = localAssetBundle.LoadAsset<VideoClip>(assetName[1]);
         m_StartColor = m_AlphaWhite;
         m_TargetColor = m_White;
     }

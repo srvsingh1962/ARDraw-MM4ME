@@ -16,12 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 990778659d71b64478d834191c0ec453
-  m_SerializeEntries:
-  - m_GUID: d81eeb14491dd48e7944140e5d99597f
-    m_Address: ReasonsUX_es
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-es
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1d70c1a36235d224ba8e8dda63b565b1, type: 2}
   m_SchemaSet:

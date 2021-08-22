@@ -53,7 +53,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
 
     static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-    bool isplane = false;
+    ARPlane isplane = null;
 
     bool infoShowned = false;
 
@@ -71,6 +71,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         infoShowned = false;
     }
 
+    // Show remove line info tag for 5 seconds.
     IEnumerator ShowInfo()
     {
         infoShowned = true;
@@ -82,18 +83,22 @@ public class ARDrawManager : Singleton<ARDrawManager>
     void Update()
     {
         _Canvas.SetActive(CanDraw);
+        
         if (!infoShowned && CanDraw)
         {
             StartCoroutine(ShowInfo());
         }
-        
-#if !UNITY_EDITOR
+
         DrawOnTouch();
+
+#if !UNITY_EDITOR
+        //DrawOnTouch();
 #else
-        DrawOnMouse();
+        //DrawOnMouse();
 #endif
     }
 
+    // Draw with mouse for editor purpose.
     void DrawOnMouse()
     {
         if (!CanDraw) return;
@@ -138,18 +143,19 @@ public class ARDrawManager : Singleton<ARDrawManager>
         }
     }
 
+    // Draw with Touch for main screen purpose.
     void DrawOnTouch()
     {
         if (!CanDraw) return;
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && CanDraw)
+        if (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
         {
             return;
         }
 
         int tapCount = Input.touchCount > 1 && lineSettings.allowMultiTouch ? Input.touchCount : 1;
 
-        for (int i = 0; i < tapCount; i++)
+        for (int i = 0; i < tapCount && i < Input.touchCount; i++)
         {
             Touch touch = Input.GetTouch(i);
 
@@ -158,98 +164,121 @@ public class ARDrawManager : Singleton<ARDrawManager>
             // Vector3 touchPosition = arCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(i).position.x, Input.GetTouch(i).position.y, lineSettings.distanceFromCamera));
 
             // Drawing on recognized plane (Horizontal and Vertical Plane)
-
             Vector3 touchPosition = Vector3.zero;
+
             if (_arRaycastManager.Raycast(Input.GetTouch(i).position, hits, TrackableType.PlaneWithinPolygon))
             {
                 var hitPose = hits[0].pose;
                 touchPosition = hitPose.position;
             }
 
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && hits.Count > 0)
             {
-                OnDraw?.Invoke();
-                Ontouched?.Invoke();
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
-#pragma warning restore CS0618 // Type or member is obsolete
-
-                if (anchor == null)
-                    Debug.LogError("Error creating reference point");
-                else
-                {
-                    anchors.Add(anchor);
-                }
-
-                ARLine line = new ARLine(lineSettings);
-                Lines.Add(touch.fingerId, line);
-                isplane = HandleRaycast(hits[0]);
-                line.AddNewLineRenderer(transform, anchor, touchPosition);
+                touchBegin(touchPosition, touch);
             }
             else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
-                if (isplane != HandleRaycast(hits[0]))
+                if(hits.Count > 0  && HandleRaycast(hits[0]) != isplane)
                 {
-                    Lines.Remove(touch.fingerId);
-#pragma warning disable CS0618 // Type or member is obsolete
-                    ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
-#pragma warning restore CS0618 // Type or member is obsolete
-                    if (anchor == null)
-                        Debug.LogError("Error creating reference point");
-                    else
-                    {
-                        anchors.Add(anchor);
-                    }
-                    ARLine line = new ARLine(lineSettings);
-                    Lines.Add(touch.fingerId, line);
-                    isplane = HandleRaycast(hits[0]);
-                    line.AddNewLineRenderer(transform, anchor, touchPosition);
+                    touchEnded(touch);
+                    touchBegin(touchPosition, touch);
                 }
-                Lines[touch.fingerId].AddPoint(touchPosition);
+
+                if(hits.Count > 0 && HandleRaycast(hits[0]) == isplane && Lines.ContainsKey(touch.fingerId))
+                {
+                    Lines[touch.fingerId].AddPoint(touchPosition);
+                }
             }
-            else if (touch.phase == TouchPhase.Ended)
+            else if (touch.phase == TouchPhase.Ended && Lines.ContainsKey(touch.fingerId))
             {
-                Vector3[] PointsInLine = new Vector3[Lines[touch.fingerId].LineRenderer.positionCount];
-                Lines[touch.fingerId].LineRenderer.GetPositions(PointsInLine);
-                float max_x = PointsInLine[0].x; _lineLength = 0;
-                for (int j = 0; j < PointsInLine.Length - 1; j++)
-                {
-                    _lineLength += Vector3.Distance(PointsInLine[j], PointsInLine[j + 1]);
-                    max_x = Mathf.Max(max_x, PointsInLine[j].x);
-                }
-                Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[touch.fingerId].LineRenderer.positionCount - 1]) / 2;
-                pos.x = max_x + 0.1f;
-                GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
-                _lineLength = Math.Round(_lineLength, 3);
-                lineLength.GetComponent<TextMeshPro>().text = _lineLength.ToString() + " m";
-                Lines.Remove(touch.fingerId);
+                touchEnded(touch);
             }
         }
     }
 
+    private void touchBegin(Vector3 touchPosition,Touch touch)
+    {
+        if (!(hits.Count > 0))
+        {
+            return;
+        }
+
+        isplane = HandleRaycast(hits[0]);
+
+        if (isplane == null)
+        {
+            return;
+        }
+
+        OnDraw?.Invoke();
+        Ontouched?.Invoke();
+
+        ARAnchor anchor = anchorManager.AddAnchor(new Pose(touchPosition, Quaternion.identity));
+
+        if (anchor == null)
+        {
+            Debug.LogError("Error creating reference point");
+        }
+        else
+        {
+            anchors.Add(anchor);
+        }
+
+        ARLine line = new ARLine(lineSettings);
+        Lines.Add(touch.fingerId, line);
+        line.AddNewLineRenderer(transform, anchor, touchPosition);
+    }
+
+    void touchEnded(Touch touch)
+    {
+        Vector3[] PointsInLine = new Vector3[Lines[touch.fingerId].LineRenderer.positionCount];
+        Lines[touch.fingerId].LineRenderer.GetPositions(PointsInLine);
+
+        // Finding the Length of the line drawn by traversing all the points in Line Renderer.
+        float max_x = PointsInLine[0].x; _lineLength = 0;
+        for (int j = 0; j < PointsInLine.Length - 1; j++)
+        {
+            _lineLength += Vector3.Distance(PointsInLine[j], PointsInLine[j + 1]);
+            max_x = Mathf.Max(max_x, PointsInLine[j].x);
+        }
+
+        // Position for placing the line le
+        Vector3 pos = (PointsInLine[0] + PointsInLine[Lines[touch.fingerId].LineRenderer.positionCount - 1]) / 2;
+        pos.x = max_x + 0.1f;
+
+        // Instantiating the line length text at pos.
+        GameObject lineLength = Instantiate(lengthTextGameobject, pos, Quaternion.identity, Lines[0].LineRenderer.gameObject.transform);
+        _lineLength = Math.Round(_lineLength, 3);
+        lineLength.GetComponent<TextMeshPro>().text = _lineLength.ToString() + " m";
+
+        Lines.Remove(touch.fingerId);
+    }
+
+    // Allow to Draw the lines.
     public void AllowDraw(bool isAllow)
     {
         CanDraw = isAllow;
     }
 
+    // To change the line width.
     public void ChangeLineWidth()
     {
         lineSettings.startWidth = linewidth[_linewidthdropdown.value];
         lineSettings.endWidth = linewidth[_linewidthdropdown.value];
     }
 
-    bool HandleRaycast(ARRaycastHit hit)
+    // Handle the Raycast to the Plane.
+    ARPlane HandleRaycast(ARRaycastHit hit)
     {
         if ((hit.hitType & TrackableType.Planes) != 0)
         {
             var plane = _planeManager.GetPlane(hit.trackableId);
             if (plane.alignment == PlaneAlignment.HorizontalUp)
             {
-                return true;
+                return plane;
             }
         }
-        return false;
+        return null;
     }
 
     GameObject[] GetAllLinesInScene()
@@ -257,6 +286,7 @@ public class ARDrawManager : Singleton<ARDrawManager>
         return GameObject.FindGameObjectsWithTag("Line");
     }
 
+    // Removing the lines.
     public void ClearLines()
     {
         GameObject[] lines = GetAllLinesInScene();

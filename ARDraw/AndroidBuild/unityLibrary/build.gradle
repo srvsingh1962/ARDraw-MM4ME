@@ -7,7 +7,7 @@ buildscript {
         // Must be Android Gradle Plugin 3.6.0 or later. For a list of
         // compatible Gradle versions refer to:
         // https://developer.android.com/studio/releases/gradle-plugin
-        classpath 'com.android.tools.build:gradle:3.6.0'
+        classpath 'com.android.tools.build:gradle:4.2.1'
     }
 }
 
@@ -25,6 +25,7 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'androidutils-release', ext:'aar')
     implementation(name: 'arcore_client', ext:'aar')
     implementation(name: 'ARPresto', ext:'aar')
     implementation(name: 'unityandroidpermissions', ext:'aar')

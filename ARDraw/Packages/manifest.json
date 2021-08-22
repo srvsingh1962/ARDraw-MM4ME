@@ -3,6 +3,7 @@
     "com.unity.2d.spriteshape": "3.0.16",
     "com.unity.build-report-inspector": "0.2.2-preview",
     "com.unity.collab-proxy": "1.2.16",
+    "com.unity.device-simulator": "3.0.1-preview",
     "com.unity.ide.rider": "1.2.1",
     "com.unity.ide.vscode": "1.2.3",
     "com.unity.localization": "1.0.0-pre.9",

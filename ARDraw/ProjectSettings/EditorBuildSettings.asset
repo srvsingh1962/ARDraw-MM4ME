@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ARDraw.unity
-    guid: d83df64dbf8634b4c8134d38bcafd448
+    path: Assets/Scenes/ARDraw-ScreenRecording&ColorPicker.unity
+    guid: 6e09be961511f7d4cb82310800f4295c
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: c61eae261341340b58d8771fca80b07e,
       type: 2}

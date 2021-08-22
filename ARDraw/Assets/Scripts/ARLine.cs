@@ -56,7 +56,8 @@ public class ARLine
         goLineRenderer.startColor = settings.startColor;
         goLineRenderer.endColor = settings.endColor;
 
-        goLineRenderer.material = settings.defaultMaterial;
+        Material lineMat = new Material(settings.defaultMaterial);
+        goLineRenderer.material = lineMat;
         goLineRenderer.useWorldSpace = true;
         goLineRenderer.positionCount = positionCount;
 
