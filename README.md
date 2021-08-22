@@ -40,13 +40,19 @@ There are 5 Major Scripts written for the project and other from helping Plugin/
 
 ## How to setup the project on your local machine:
 * Make sure you have [UNITY 3D](https://unity3d.com/get-unity/download) and [Android Studio](https://developer.android.com/studio?gclsrc=ds&gclsrc=ds&gclid=CKLO17GTuvICFQOVjgod_mED4A) installed on your machine.
-* Clone this and [Mapmint4ME](https://github.com/srvsingh1962/MapMint4ME) Repository at your desired same folder.
+* Clone [this](https://github.com/srvsingh1962/ARDraw-MM4ME) and [Mapmint4ME](https://github.com/srvsingh1962/MapMint4ME) Repository at your desired same folder.
 
    ![Screenshot 2021-08-18 134911](https://user-images.githubusercontent.com/56843128/129863906-dc952055-d623-4beb-ac2e-e1f61cd1a901.png)
 * Now you can open the UNITY project and make sure Android pletform is selected and as we are building this project as library make sure the Export project is selected and Project setting> Player >  Other Setting > Configuration > Scripting Backend is IL2CPP.
 
    ![Screenshot 2021-08-18 135250](https://user-images.githubusercontent.com/56843128/129864725-e51b710b-10c9-4f22-904c-b3f3dde6abc5.png)
 
-* After you Export the project in ARDraw-MM4ME > ARDraw > AndroidBuild folder open the Android project with Android Studio and Sync the project with Gradle files.
+* After you Export the project in ARDraw-MM4ME > ARDraw > AndroidBuild folder open the MM4ME Android project with Android Studio and Sync the project with Gradle files.
+
+
+Note: In the Android Build folder in UNITY project you can see one folder name as unityLibrary and that is the folder we are using as library in our MM4ME project. Make sure the folder are at the right places and below given link is valid in your project to sync the project with gradle files.
+
+   ![Capture](https://user-images.githubusercontent.com/56843128/130348426-62126bf9-6408-407b-a2bc-d1e6930f0c14.PNG)
+
 
 Happy Coding :)
